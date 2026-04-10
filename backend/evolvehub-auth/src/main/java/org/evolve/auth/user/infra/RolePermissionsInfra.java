@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.evolve.auth.user.model.RolePermissionsEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 角色-权限关联数据访问层
  * <p>
@@ -36,6 +38,16 @@ public class RolePermissionsInfra extends ServiceImpl<RolePermissionsInfra.RoleP
                 .eq(RolePermissionsEntity::getRoleId, roleId)
                 .eq(RolePermissionsEntity::getPermissionId, permissionId)
                 .one();
+    }
+
+    /**
+     * 查询指定角色的全部权限关联
+     *
+     * @param roleId 角色 ID
+     * @return 该角色的全部权限关联列表
+     */
+    public List<RolePermissionsEntity> listByRoleId(Long roleId) {
+        return this.lambdaQuery().eq(RolePermissionsEntity::getRoleId, roleId).list();
     }
 
     // ==================== 统计 ====================

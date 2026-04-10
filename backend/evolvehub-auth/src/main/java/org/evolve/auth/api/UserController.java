@@ -1,5 +1,6 @@
 package org.evolve.auth.api;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.evolve.auth.user.model.UsersEntity;
@@ -65,6 +66,7 @@ public class UserController {
      * @param request 创建用户请求体
      * @return 创建成功的用户ID
      */
+    @SaCheckPermission("user:create")
     @PostMapping("/create")
     public Result<CreateUserResponse> create(@RequestBody @Valid CreateUserRequest request) {
         return Result.ok(createUserManager.execute(request));
@@ -76,6 +78,7 @@ public class UserController {
      * @param id 用户ID
      * @return 用户实体信息
      */
+    @SaCheckPermission("user:query")
     @GetMapping("/{id}")
     public Result<UsersEntity> getById(@PathVariable Long id) {
         return Result.ok(getUserManager.execute(id));
@@ -88,6 +91,7 @@ public class UserController {
      * @param pageSize 每页条数，默认为10
      * @return 分页用户列表
      */
+    @SaCheckPermission("user:list")
     @GetMapping("/list")
     public Result<PageResponse<UsersEntity>> list(@RequestParam(defaultValue = "1") int pageNum,
                                                    @RequestParam(defaultValue = "10") int pageSize) {
@@ -101,6 +105,7 @@ public class UserController {
      * @param request 更新用户请求体
      * @return 更新结果
      */
+    @SaCheckPermission("user:update")
     @PutMapping("/update")
     public Result<UpdateUserResponse> update(@RequestBody @Valid UpdateUserRequest request) {
         return Result.ok(updateUserManager.execute(request));
@@ -113,6 +118,7 @@ public class UserController {
      * @param id 用户ID
      * @return 删除结果
      */
+    @SaCheckPermission("user:delete")
     @DeleteMapping("/{id}")
     public Result<Void> delete(@PathVariable Long id) {
         deleteUserManager.execute(id);
@@ -126,6 +132,7 @@ public class UserController {
      * @param request 分配角色请求体（包含用户ID和角色ID）
      * @return 分配结果
      */
+    @SaCheckPermission("user:assign-role")
     @PostMapping("/assign-role")
     public Result<AssignUserRoleResponse> assignRole(@RequestBody @Valid AssignUserRoleRequest request) {
         return Result.ok(assignUserRoleManager.execute(request));
@@ -138,6 +145,7 @@ public class UserController {
      * @param request 移除角色请求体（包含用户ID和角色ID）
      * @return 移除结果
      */
+    @SaCheckPermission("user:assign-role")
     @PostMapping("/remove-role")
     public Result<RemoveUserRoleResponse> removeRole(@RequestBody @Valid RemoveUserRoleRequest request) {
         return Result.ok(removeUserRoleManager.execute(request));

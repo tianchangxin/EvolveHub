@@ -1,5 +1,6 @@
 package org.evolve.auth.api;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.evolve.auth.user.model.PermissionsEntity;
@@ -53,6 +54,7 @@ public class PermissionController {
      * @param request 创建权限请求体
      * @return 创建成功的权限ID
      */
+    @SaCheckPermission("permission:create")
     @PostMapping("/create")
     public Result<CreatePermissionResponse> create(@RequestBody @Valid CreatePermissionRequest request) {
         return Result.ok(createPermissionManager.execute(request));
@@ -64,6 +66,7 @@ public class PermissionController {
      * @param id 权限ID
      * @return 权限实体信息
      */
+    @SaCheckPermission("permission:query")
     @GetMapping("/{id}")
     public Result<PermissionsEntity> getById(@PathVariable Long id) {
         return Result.ok(getPermissionManager.execute(id));
@@ -76,6 +79,7 @@ public class PermissionController {
      * @param pageSize 每页条数，默认为10
      * @return 分页权限列表
      */
+    @SaCheckPermission("permission:list")
     @GetMapping("/list")
     public Result<PageResponse<PermissionsEntity>> list(@RequestParam(defaultValue = "1") int pageNum,
                                                          @RequestParam(defaultValue = "10") int pageSize) {
@@ -89,6 +93,7 @@ public class PermissionController {
      * @param request 更新权限请求体
      * @return 更新结果
      */
+    @SaCheckPermission("permission:update")
     @PutMapping("/update")
     public Result<UpdatePermissionResponse> update(@RequestBody @Valid UpdatePermissionRequest request) {
         return Result.ok(updatePermissionManager.execute(request));
@@ -101,6 +106,7 @@ public class PermissionController {
      * @param id 权限ID
      * @return 删除结果
      */
+    @SaCheckPermission("permission:delete")
     @DeleteMapping("/{id}")
     public Result<Void> delete(@PathVariable Long id) {
         deletePermissionManager.execute(id);

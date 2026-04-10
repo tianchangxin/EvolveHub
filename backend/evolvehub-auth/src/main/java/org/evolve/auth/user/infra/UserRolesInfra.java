@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.evolve.auth.user.model.UserRolesEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 用户-角色关联数据访问层
  * <p>
@@ -36,6 +38,16 @@ public class UserRolesInfra extends ServiceImpl<UserRolesInfra.UserRolesMapper, 
                 .eq(UserRolesEntity::getUserId, userId)
                 .eq(UserRolesEntity::getRoleId, roleId)
                 .one();
+    }
+
+    /**
+     * 查询用户持有的所有角色关联
+     *
+     * @param userId 用户 ID
+     * @return 该用户的全部角色关联列表
+     */
+    public List<UserRolesEntity> listByUserId(Long userId) {
+        return this.lambdaQuery().eq(UserRolesEntity::getUserId, userId).list();
     }
 
     // ==================== 统计 ====================

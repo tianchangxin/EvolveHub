@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.ibatis.annotations.Mapper;
 import org.evolve.auth.user.model.UsersEntity;
+import org.evolve.common.datascope.DataScopeContextHolder;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -116,6 +117,11 @@ public class UsersInfra extends ServiceImpl<UsersInfra.UsersMapper, UsersEntity>
      * @return 分页结果
      */
     public Page<UsersEntity> listPage(int pageNum, int pageSize) {
-        return this.page(new Page<>(pageNum, pageSize));
+        DataScopeContextHolder.enableFilter();
+        try {
+            return this.page(new Page<>(pageNum, pageSize));
+        } finally {
+            DataScopeContextHolder.disableFilter();
+        }
     }
 }
